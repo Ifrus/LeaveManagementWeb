@@ -9,9 +9,12 @@ using LeaveManagement.Web.Data;
 using AutoMapper;
 using LeaveManagement.Web.Models;
 using LeaveManagement.Web.Contracts;
+using Microsoft.AspNetCore.Authorization;
+using LeaveManagement.Web.Constants;
 
 namespace LeaveManagement.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)] //login to have access to the resources
     public class LeaveTypesController : Controller
     {
         private readonly ILeaveTypeRepository leaveTypeRepository;
@@ -63,7 +66,7 @@ namespace LeaveManagement.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(leaveTypeVM);
-        } 
+        }
 
         // GET: LeaveTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -94,7 +97,7 @@ namespace LeaveManagement.Web.Controllers
                 try
                 {
                     var leaveType =  mapper.Map<LeaveType>(leaveTypeVM);
-                    leaveTypeRepository.UpdateAsync(leaveType);
+                    await leaveTypeRepository.UpdateAsync(leaveType);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +120,7 @@ namespace LeaveManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            leaveTypeRepository.DeleteAsync(id);
+            await leaveTypeRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
