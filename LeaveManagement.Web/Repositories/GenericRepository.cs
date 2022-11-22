@@ -1,4 +1,4 @@
-﻿using LeaveManagement.Web.Contracts;
+﻿ using LeaveManagement.Web.Contracts;
 using LeaveManagement.Web.Data;
 using Microsoft.EntityFrameworkCore;
 
